@@ -1,0 +1,27 @@
+security:
+    enable_authenticator_manager: true
+    password_hashers:
+        App\Model\User\Entity\User:
+            algorithm: 'auto'
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Model\User\Entity\User
+                property: email
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            form_login:
+                enable_csrf: true
+                login_path: cp.login
+                default_target_path: cp.parer.task.index
+                check_path: cp.login
+            logout:
+                path: cp.logout
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+    access_control:
+        - { path: ^/cpanel/*, roles: ROLE_USER }

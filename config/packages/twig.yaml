@@ -1,0 +1,8 @@
+twig:
+    globals:
+        asset_v: 0.43
+    default_path: '%kernel.project_dir%/templates'
+
+when@test:
+    twig:
+        strict_variables: true

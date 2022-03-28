@@ -1,0 +1,175 @@
+{% extends "cpanel/layouts/layout.html.twig" %}
+
+{% block title %} Parser | Task Management | {{ task is defined ? 'Edit' : 'Create'}} {% endblock %}
+
+{% block content %}
+    <!--begin::Toolbar-->
+    <div class="toolbar" id="kt_toolbar">
+        <!--begin::Container-->
+        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+            <!--begin::Page title-->
+            <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
+                 data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
+                 class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                <!--begin::Title-->
+                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">Parser</h1>
+                <!--end::Title-->
+                <!--begin::Separator-->
+                <span class="h-20px border-gray-200 border-start mx-4"></span>
+                <!--end::Separator-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item text-dark muted">
+                        <a href="{{ path('cp.parer.task.index') }}" class="text-muted text-hover-primary">
+                            Task Management
+                        </a>
+                    </li>
+                    <!--end::Item-->
+                    <li class="breadcrumb-item">
+                        <span class="bullet bg-gray-200 w-5px h-2px"></span>
+                    </li>
+                    <!--begin::Item-->
+                    {% if Task is defined %}
+                        <li class="breadcrumb-item text-dark">Edit <span
+                                    class="text-primary ms-2">«{{ task.title }}»</span>
+                        </li>
+                    {% else %}
+                        <li class="breadcrumb-item text-dark">Create</li>
+                    {% endif %}
+                    <!--end::Item-->
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page title-->
+            <!--begin::Actions-->
+            <div class="d-flex align-items-center py-1">
+                <!--begin::Wrapper-->
+                <div class="me-4">
+                    <!--begin::Menu-->
+                    <a href="{{ path('cp.parer.task.index') }}"
+                       class="btn btn-sm btn-flex d-flex btn-light btn-active-primary fw-bolder align-items-center">
+                        <i class="fas fa-arrow-left"></i>
+                        Back
+                    </a>
+                    <!--end::Menu-->
+                </div>
+                <!--end::Wrapper-->
+                <!--begin::Button-->
+                <button class="btn btn-sm btn-primary" type="submit" form="form">Save</button>
+                <!--end::Button-->
+            </div>
+            <!--end::Actions-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Toolbar-->
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container-fluid">
+        {{ form_start(form, {'attr': {'id': 'form'}}) }}
+        <div id="kt_content_container" class="container-xxl">
+            <!--begin::Layout-->
+            <div class="d-flex flex-column flex-xl-row">
+                <!--begin::Sidebar-->
+                <div class="flex-column flex-lg-row-auto w-100 w-lg-300px mb-10">
+                    <!--begin::Card-->
+                    <div class="card card-flush">
+                        <!--begin::Card header-->
+                        <div class="card-header">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <h2 class="mb-0">Navigation</h2>
+                            </div>
+                            <!--end::Card title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body p-4 pt-0">
+                            <div class="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500">
+                                <div class="menu-item">
+                                    <a href="#" class="menu-link active">
+                                        <span class="menu-icon">
+                                            <i class="fas fa-clinic-medical"></i>
+                                        </span>
+                                        <span class="menu-title fw-bold">Default</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Sidebar-->
+                <!--begin::Content-->
+                <div class="flex-lg-row-fluid ms-lg-10">
+                    <!--begin::Card-->
+                    <div class="card mb-6 mb-xl-9">
+                        <!--begin::Card header-->
+                        <div class="card-header">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <h2 class="d-flex align-items-center">Default</h2>
+                            </div>
+                            <!--end::Card title-->
+                        </div>
+                        <!--end::Card header-->
+                        <!--begin::Card body-->
+                        <div class="card-body">
+
+                            <!--begin::Input group-->
+                            <div class="fv-row row mb-15">
+                                <!--begin::Col-->
+                                <div class="col-md-3 d-flex align-items-center justify-content-end">
+                                    <!--begin::Label-->
+                                    {{ form_label(form.contract) }}
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <!--begin::Input-->
+                                    {% if form.contract.vars.valid %}
+                                        {{ form_widget(form.contract) }}
+                                    {% else %}
+                                        {{ form_widget(form.contract, {attr: {class: 'form-control is-invalid'}}) }}
+                                    {% endif %}
+                                    <!--end::Input-->
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            <div class="fv-row row mb-15 text-end">
+                                <!--begin::Col-->
+                                <div class="col-md-3 d-flex align-items-center  justify-content-end">
+                                    <!--begin::Label-->
+                                    {{ form_label(form.status) }}
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-3">
+                                    <!--begin::Input-->
+                                    {% if form.status.vars.valid %}
+                                        {{ form_widget(form.status) }}
+                                    {% else %}
+                                        {{ form_widget(form.status, {attr: {class: 'form-control is-invalid'}}) }}
+                                    {% endif %}
+                                    <!--end::Input-->
+                                </div>
+                                <!--end::Col-->
+                            </div>
+
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Content-->
+            </div>
+            <!--end::Layout-->
+        </div>
+        {{ form_end(form) }}
+    </div>
+    <!--end::Container-->
+{% endblock %}
