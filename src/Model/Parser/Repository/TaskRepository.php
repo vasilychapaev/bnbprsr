@@ -39,8 +39,7 @@ class TaskRepository extends ServiceEntityRepository
             ->andWhere('t.processed = :processed')
             ->setParameter(':processed', false)
             ->andWhere('t.updatedAt < :oneHourAgo')
-            ->setParameter(':oneHourAgo', $oneHourAgo)
-            ->setParameter(':lastProcessStatus', Process::STATUS_FINISH);
+            ->setParameter(':oneHourAgo', $oneHourAgo);
 
         return $qb->getQuery()->getResult();
     }
