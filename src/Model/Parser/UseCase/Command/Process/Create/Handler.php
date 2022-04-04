@@ -38,6 +38,10 @@ class Handler
 
         $task = $cmd->task;
 
+        $task->startProcess();
+
+        $this->flusher->flush();
+
         $events = [];
 
         $hashes = $this->bsScanRepository->getIdsByContract(
@@ -55,6 +59,8 @@ class Handler
         $process->updateStatus($processStatus);
 
         $task->updateLastTransactionHash($hashes[0] ?? $task->getLastTransactionHash());
+
+        $task->startProcess();
 
         $this->processRepository->add($process);
 

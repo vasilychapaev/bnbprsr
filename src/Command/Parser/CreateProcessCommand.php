@@ -2,12 +2,8 @@
 
 namespace App\Command\Parser;
 
-use App\Model\Parser\Entity\Process;
-use App\Model\Parser\Entity\Task;
 use App\Model\Parser\Repository\TaskRepository;
 use App\Model\Parser\UseCase\Command\Process\Create\Handler as ProcessCreateHandler;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,6 +30,13 @@ class CreateProcessCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $processedTasks = $this->taskRepository->getProcessed();
+
+        if (count($processedTasks)){
+            echo 'There are pending jobs';
+            return Command::SUCCESS;
+        }
+
         $tasks = $this->taskRepository->getForCreateProcess();
 
         foreach ($tasks as $task) {

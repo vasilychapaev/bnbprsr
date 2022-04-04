@@ -82,6 +82,7 @@ class Handler
         $process->incrementProcessed(count($cmd->transactions));
 
         if ($process->getProcessed() === $process->getTotal()){
+            $task->finishProcess();
             $process->updateStatus(Process::STATUS_FINISH);
         }else{
             $process->updateStatus(Process::STATUS_PROCESSED);

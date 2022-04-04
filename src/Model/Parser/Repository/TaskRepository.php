@@ -16,37 +16,33 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
+    public function getProcessed()
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        $qb
+            ->where('t.processed = :processed')
+            ->setParameter(':processed', true);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function getForCreateProcess()
     {
-        $oneHourAgo =  (new \DateTime())->modify('-1 hour');
+        $oneHourAgo = (new \DateTime())->modify('-1 hour');
 
         $qb = $this->createQueryBuilder('t');
 
         $qb
             ->where('t.status = :status')
-            ->setParameter(':status', true);
+            ->setParameter(':status', true)
+            ->andWhere('t.processed = :processed')
+            ->setParameter(':processed', false)
+            ->andWhere('t.updatedAt < :oneHourAgo')
+            ->setParameter(':oneHourAgo', $oneHourAgo)
+            ->setParameter(':lastProcessStatus', Process::STATUS_FINISH);
 
-        $tasks = new ArrayCollection($qb->getQuery()->getResult());
-
-        return $tasks->filter(function ($item)use($oneHourAgo) {
-            $process = $item->getLasProcess();
-
-
-            if (null === $process) {
-                return true;
-            }
-
-
-            elseif ($process->getStatus() === Process::STATUS_PROCESSED){
-                return false;
-            }
-
-            elseif ( $process->getStatus() === Process::STATUS_FINISH && $process->getCreatedAt() < $oneHourAgo) {
-                return true;
-            }
-
-            return false;
-        });
+        return $qb->getQuery()->getResult();
     }
 
     public function add(Task $task)

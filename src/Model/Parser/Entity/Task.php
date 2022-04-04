@@ -46,6 +46,11 @@ class Task
     private bool $status;
 
     /**
+     * @ORM\Column(type="boolean", options={"default": 0})
+     */
+    private bool $processed;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     private ?string $lastTransactionHash;
@@ -67,6 +72,7 @@ class Task
         $this->contract = $contract;
         $this->status = $status;
         $this->lastTransactionHash = null;
+        $this->processed = false;
         $this->transactions = new ArrayCollection();
     }
 
@@ -99,25 +105,28 @@ class Task
         return $this->processes;
     }
 
-    /**
-     * @return bool|string
-     */
     public function getStatus()
     {
         return $this->status;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
+    public function startProcess() : self
+    {
+        $this->processed = true;
+        return $this;
+    }
+
+    public function finishProcess() : self
+    {
+        $this->processed = true;
+        return $this;
+    }
+
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function getUpdatedAt(): \DateTimeInterface
     {
         return $this->updatedAt;
@@ -134,9 +143,6 @@ class Task
         return $process ? $process : null;
     }
 
-    /**
-     * @return ArrayCollection|Collection
-     */
     public function getTransactions(): ArrayCollection
     {
         return $this->transactions;
