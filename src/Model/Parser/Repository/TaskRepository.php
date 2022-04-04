@@ -31,12 +31,14 @@ class TaskRepository extends ServiceEntityRepository
         return $tasks->filter(function ($item)use($oneHourAgo) {
             $process = $item->getLasProcess();
 
-            if ($process->getStatus() === Process::STATUS_PROCESSED){
-                return false;
+
+            if (null === $process) {
+                return true;
             }
 
-            elseif (null === $process) {
-                return true;
+
+            elseif ($process->getStatus() === Process::STATUS_PROCESSED){
+                return false;
             }
 
             elseif ( $process->getStatus() === Process::STATUS_FINISH && $process->getCreatedAt() < $oneHourAgo) {
