@@ -37,9 +37,11 @@ class CreateProcessCommand extends Command
             return Command::SUCCESS;
         }
 
-        $tasks = $this->taskRepository->getForCreateProcess();
+        $task = $this->taskRepository->getForCreateProcess();
 
-        foreach ($tasks as $task) {
+        if (null === $task){
+            echo 'Not task for job';
+        }else{
             $cmd = new ProcessCreateCommand($task);
             $this->handler->handle($cmd);
         }

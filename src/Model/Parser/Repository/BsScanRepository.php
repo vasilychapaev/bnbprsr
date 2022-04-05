@@ -54,7 +54,7 @@ class BsScanRepository
 
     private function fetchTransactions(string $contract, int $page, $limit = 100): string
     {
-        usleep(3200000/4);
+        usleep(1000000);
         echo 'Download page - '. $page.PHP_EOL;
         try {
             return $this->client
@@ -70,7 +70,7 @@ class BsScanRepository
     }
 
     private function fetchTransaction(string $hash){
-        usleep(3200000/4);
+        usleep(1000000);
         echo 'Download page transaction - '. $hash.PHP_EOL;
         try {
             return $this->client

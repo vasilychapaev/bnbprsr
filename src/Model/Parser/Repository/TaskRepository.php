@@ -5,6 +5,8 @@ namespace App\Model\Parser\Repository;
 
 use App\Model\Parser\Entity\Task;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 class TaskRepository extends ServiceEntityRepository
@@ -39,7 +41,7 @@ class TaskRepository extends ServiceEntityRepository
             ->andWhere('t.lastProcessAt < :oneHourAgo OR t.lastProcessAt IS NULL')
             ->setParameter(':oneHourAgo', $oneHourAgo);
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult()[0] ?? null;
     }
 
     public function add(Task $task)
