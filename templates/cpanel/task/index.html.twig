@@ -72,6 +72,7 @@
                         <th class="w-10px pe-2 text-center">#</th>
                         <th class="min-w-80px text-start ps-5">Contract</th>
                         <th class="min-w-80px text-start ps-5">Status</th>
+                        <th class="min-w-80px text-start ps-5">Processed</th>
                         <th class="min-w-125px text-center">Add Date</th>
                         <th class="min-w-100px text-end">Actions</th>
                     </tr>
@@ -99,6 +100,13 @@
                                     <div class="badge badge-light-primary m-1">Active</div>
                                 {% else %}
                                     <div class="badge badge-light-danger m-1">Not active</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if task.processed %}
+                                    <div class="badge badge-light-primary m-1">Yes</div>
+                                {% else %}
+                                    <div class="badge badge-light-danger m-1">No</div>
                                 {% endif %}
                             </td>
                             <!--end::Status=-->
