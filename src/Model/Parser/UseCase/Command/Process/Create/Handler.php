@@ -54,13 +54,14 @@ class Handler
             count($hashes),
         );
 
-        $processStatus = count($hashes) === 0 ? Process::STATUS_FINISH : Process::STATUS_WAIT;
+        if (count($hashes) === 0){
+            $process->updateStatus(Process::STATUS_FINISH);
+            $task->finishProcess();
+        }
 
-        $process->updateStatus($processStatus);
+        $task->updateLastProcessAt();
 
         $task->updateLastTransactionHash($hashes[0] ?? $task->getLastTransactionHash());
-
-        $task->startProcess();
 
         $this->processRepository->add($process);
 

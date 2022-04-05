@@ -3,10 +3,8 @@
 
 namespace App\Model\Parser\Repository;
 
-use App\Model\Parser\Entity\Process;
 use App\Model\Parser\Entity\Task;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 class TaskRepository extends ServiceEntityRepository
@@ -38,7 +36,7 @@ class TaskRepository extends ServiceEntityRepository
             ->setParameter(':status', true)
             ->andWhere('t.processed = :processed')
             ->setParameter(':processed', false)
-            ->andWhere('t.updatedAt < :oneHourAgo')
+            ->andWhere('t.lastProcessAt < :oneHourAgo OR t.lastProcessAt IS NULL')
             ->setParameter(':oneHourAgo', $oneHourAgo);
 
         return $qb->getQuery()->getResult();

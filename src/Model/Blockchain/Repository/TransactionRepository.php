@@ -19,7 +19,7 @@ class TransactionRepository extends ServiceEntityRepository
 
     public function createViewForTask(Task $task){
         $viewName = "transactions_{$task->getContract()}";
-        $sql = "CREATE OR REPLACE VIEW `app`.`{$viewName}` AS SELECT
+        $sql = "CREATE OR REPLACE VIEW `{$viewName}` AS SELECT
 	            blockchain_transactions.*
                 FROM
                 	blockchain_transactions

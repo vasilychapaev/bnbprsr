@@ -62,6 +62,11 @@ class Task
     private \DateTimeInterface  $createdAt;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?\DateTimeInterface $lastProcessAt;
+
+    /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
@@ -72,6 +77,7 @@ class Task
         $this->contract = $contract;
         $this->status = $status;
         $this->lastTransactionHash = null;
+        $this->lastProcessAt = null;
         $this->processed = false;
         $this->transactions = new ArrayCollection();
     }
@@ -82,7 +88,7 @@ class Task
         $this->status = $status;
     }
 
-    public function updateLastTransactionHash(string $hash): self
+    public function updateLastTransactionHash(?string $hash): self
     {
         $this->lastTransactionHash = $hash;
 
@@ -118,7 +124,7 @@ class Task
 
     public function finishProcess() : self
     {
-        $this->processed = true;
+        $this->processed = false;
         return $this;
     }
 
@@ -146,5 +152,10 @@ class Task
     public function getTransactions(): ArrayCollection
     {
         return $this->transactions;
+    }
+
+    public function updateLastProcessAt(){
+        $this->lastProcessAt = new \DateTime();
+        return $this;
     }
 }
