@@ -116,6 +116,11 @@ class Task
         return $this->status;
     }
 
+    public function getProcessed() : bool
+    {
+        return $this->processed;
+    }
+
     public function startProcess() : self
     {
         $this->processed = true;
