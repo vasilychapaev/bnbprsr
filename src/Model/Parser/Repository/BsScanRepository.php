@@ -41,6 +41,7 @@ class BsScanRepository
                 $flag = false;
                 $key = array_search($lastTransactionHash, $transactionIds);
                 $transactionIds = array_slice($transactionIds, 0, $key);
+                $ids = array_merge($ids, $transactionIds);
             }
 
             if ($flag) $ids = array_merge($ids, $transactionIds);
