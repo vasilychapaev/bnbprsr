@@ -13,4 +13,8 @@ class Command
     public ?string $contract;
 
     public bool $status;
+
+    public ?string $title = null;
+
+    public ?string $description = null;
 }

@@ -17,10 +17,16 @@ class Command
 
     public bool $status;
 
+    public ?string $title;
+
+    public ?string $description;
+
     public function __construct(Task $task)
     {
-        $this->id  =$task->getId();
-        $this->contract  = $task->getContract();
-        $this->status  = $task->getStatus();
+        $this->id = $task->getId();
+        $this->title = $task->getTitle();
+        $this->description = $task->getDescription();
+        $this->contract = $task->getContract();
+        $this->status = $task->getStatus();
     }
 }

@@ -27,7 +27,7 @@ class Handler
             throw new \DomainException('Task not found');
         }
 
-        $task->update($command->contract, $command->status);
+        $task->update($command->contract, $command->status, $command->title, $command->description);
 
         $this->flusher->flush();
     }

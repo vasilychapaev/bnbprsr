@@ -26,6 +26,16 @@ class Task
     private int $id;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $title;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $description;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Model\Blockchain\Entity\Transaction", mappedBy="task")
      */
     private Collection $transactions;
@@ -72,7 +82,7 @@ class Task
      */
     private \DateTimeInterface $updatedAt;
 
-    public function __construct(string $contract, string $status)
+    public function __construct(string $contract, string $status, ?string $title, ?string $description)
     {
         $this->contract = $contract;
         $this->status = $status;
@@ -80,12 +90,17 @@ class Task
         $this->lastProcessAt = null;
         $this->processed = false;
         $this->transactions = new ArrayCollection();
+        $this->title = $title;
+        $this->description = $description;
     }
 
-    public function update(string $contract, string $status)
+    public function update(string $contract, string $status, ?string $title, ?string $description)
     {
         $this->contract = $contract;
         $this->status = $status;
+        $this->title = $title;
+        $this->description = $description;
+
     }
 
     public function updateLastTransactionHash(?string $hash): self
@@ -114,6 +129,16 @@ class Task
     public function getStatus()
     {
         return $this->status;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 
     public function getProcessed() : bool

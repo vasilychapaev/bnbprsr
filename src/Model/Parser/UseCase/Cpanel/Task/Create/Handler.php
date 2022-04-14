@@ -36,7 +36,7 @@ class Handler
             throw new \DomainException('Error, task with this contract already exists');
         }
 
-        $task = new Task($command->contract, $command->status);
+        $task = new Task($command->contract, $command->status, $command->title, $command->description);
         $this->taskRepository->add($task);
         $this->transactionRepository->createViewForTask($task);
         $this->flusher->flush();

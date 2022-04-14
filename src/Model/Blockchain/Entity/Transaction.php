@@ -23,7 +23,7 @@ class Transaction
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Model\Parser\Entity\Task", inversedBy="transactions")
-     * @ORM\JoinColumn(name="task_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="task_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private Task $task;
 

@@ -116,7 +116,50 @@
                         <!--end::Card header-->
                         <!--begin::Card body-->
                         <div class="card-body">
-
+                            <!--begin::Input group-->
+                            <div class="fv-row row mb-15">
+                                <!--begin::Col-->
+                                <div class="col-md-3 d-flex align-items-center justify-content-end">
+                                    <!--begin::Label-->
+                                    {{ form_label(form.title) }}
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <!--begin::Input-->
+                                    {% if form.title.vars.valid %}
+                                        {{ form_widget(form.title) }}
+                                    {% else %}
+                                        {{ form_widget(form.title, {attr: {class: 'form-control is-invalid'}}) }}
+                                    {% endif %}
+                                    <!--end::Input-->
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="fv-row row mb-15">
+                                <!--begin::Col-->
+                                <div class="col-md-3 d-flex align-items-center justify-content-end">
+                                    <!--begin::Label-->
+                                    {{ form_label(form.description) }}
+                                    <!--end::Label-->
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-md-6">
+                                    <!--begin::Input-->
+                                    {% if form.description.vars.valid %}
+                                        {{ form_widget(form.description) }}
+                                    {% else %}
+                                        {{ form_widget(form.description, {attr: {class: 'form-control is-invalid'}}) }}
+                                    {% endif %}
+                                    <!--end::Input-->
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
                             <!--begin::Input group-->
                             <div class="fv-row row mb-15">
                                 <!--begin::Col-->

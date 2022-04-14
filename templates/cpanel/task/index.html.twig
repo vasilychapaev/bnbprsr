@@ -70,7 +70,7 @@
                     <!--begin::Table row-->
                     <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
                         <th class="w-10px pe-2 text-center">#</th>
-                        <th class="min-w-80px text-start ps-5">Contract</th>
+                        <th class="min-w-80px text-start ps-5">Task</th>
                         <th class="min-w-80px text-start ps-5">Status</th>
                         <th class="min-w-80px text-start ps-5">Processed</th>
                         <th class="min-w-125px text-center">Add Date</th>
@@ -90,10 +90,24 @@
                             </td>
                             <!--end::id-->
                             <!--begin::Contract=-->
-                            <td>
-                                {{ task.contract }}
+                            <td class="d-flex align-items-center">
+                                <!--begin:: Avatar -->
+                                <div class="symbol symbol-60px overflow-hidden me-3">
+                                    {% set color = random(['danger', 'success', 'primary', 'info']) %}
+                                    <div class="symbol-label fs-3 bg-light-{{ color }} text-{{ color }}">{{ task.title|first|upper }}</div>
+                                </div>
+                                <!--end::Avatar-->
+                                <!--begin::User details-->
+                                <div class="d-flex flex-column">
+                                    <a href="{{ path('cp.parer.task.edit', {id:task.id}) }}" class="text-gray-800 text-hover-primary">
+                                        {{ task.title ? task.title : '-' }}
+                                    </a>
+                                    <span class="text-muted">{{ task.contract }}</span>
+                                    <span class="text-muted fs-7">{{ task.description ? task.description : '-' }}</span>
+                                </div>
+                                <!--begin::User details-->
                             </td>
-                            <!--end::User=-->
+                            <!--end::Contract=-->
                             <!--begin::Status=-->
                             <td>
                                 {% if task.status %}

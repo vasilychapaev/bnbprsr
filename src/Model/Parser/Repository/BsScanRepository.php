@@ -22,12 +22,15 @@ class BsScanRepository
         ]);
     }
 
-    public function getTransactionByHash(string $hash){
-        $pageContent = $this->fetchTransaction($hash);
-        return $this->normalizedTransactionData($pageContent);
+    public function getTransactionByHash(string $hash)
+    {
+        return $this->normalizedTransactionData(
+            $this->fetchTransaction($hash)
+        );
     }
 
-    public function getIdsByContract(string $contract, ?string $lastTransactionHash = null ){
+    public function getIdsByContract(string $contract, ?string $lastTransactionHash = null)
+    {
         $ids = [];
         $i = 1;
         $flag = true;
@@ -37,7 +40,7 @@ class BsScanRepository
             $transactionIds = $this->normalizedTransactionsHashes($content);
             $flag = !!$transactionIds;
 
-            if (in_array($lastTransactionHash , $transactionIds)){
+            if (in_array($lastTransactionHash, $transactionIds)) {
                 $flag = false;
                 $key = array_search($lastTransactionHash, $transactionIds);
                 $transactionIds = array_slice($transactionIds, 0, $key);
@@ -48,7 +51,7 @@ class BsScanRepository
             $i++;
         }
 
-        echo "All transactions count - ".count($ids).PHP_EOL;
+        echo "All transactions count - " . count($ids) . PHP_EOL;
 
         return $ids;
     }
@@ -56,34 +59,29 @@ class BsScanRepository
     private function fetchTransactions(string $contract, int $page, $limit = 100): string
     {
         usleep(1000000);
-        echo 'Download page - '. $page.PHP_EOL;
+        echo 'Download page - ' . $page . PHP_EOL;
         try {
             return $this->client
                 ->request('GET', "/txs?a={$contract}&ps={$limit}&p={$page}")
                 ->getContent();
-        } catch (ClientExceptionInterface $e) {
-        } catch (RedirectionExceptionInterface $e) {
-        } catch (ServerExceptionInterface $e) {
-        } catch (TransportExceptionInterface $e) {
+        } catch (TransportExceptionInterface|ServerExceptionInterface|RedirectionExceptionInterface|ClientExceptionInterface $e) {
+            echo $e->getMessage() . PHP_EOL;
         }
 
         return '';
     }
 
-    private function fetchTransaction(string $hash){
-        usleep(1000000);
-        echo 'Download page transaction - '. $hash.PHP_EOL;
+    private function fetchTransaction(string $hash)
+    {
+        //usleep(1000000);
+        echo 'Download page transaction - ' . $hash . PHP_EOL;
         try {
             return $this->client
                 ->request('GET', "/tx/{$hash}")
                 ->getContent();
-        } catch (ClientExceptionInterface $e) {
-        } catch (RedirectionExceptionInterface $e) {
-        } catch (ServerExceptionInterface $e) {
-        } catch (TransportExceptionInterface $e) {
+        } catch (ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $e) {
+            echo $e->getMessage() . PHP_EOL;
         }
-
-        return '';
     }
 
     private function normalizedTransactionsHashes(string $pageContent): ?array
@@ -99,6 +97,7 @@ class BsScanRepository
 
     private function normalizedTransactionData(string $pageContent): object
     {
+
         $crawler = new Crawler($pageContent);
 
         //hash
@@ -137,9 +136,8 @@ class BsScanRepository
         $data['method'] = $this->prepareMethod($method);
         $data['raw'] = '';
 
-        return (object) $data;
+        return (object)$data;
     }
-
 
     private function prepareTimestamp(string $value): \DateTime
     {
@@ -153,14 +151,14 @@ class BsScanRepository
     private function prepareValue(string $value): float
     {
         list($value, $currency, $valueUDS) = explode(' ', $value);
-        return (float) $value;
+        return (float)$value;
     }
 
     private function prepareUDSValue(string $value): float
     {
         list($value, $currency, $valueUDS) = explode(' ', $value);
         $valueUDS = preg_replace('/\(\)\$/', '', $valueUDS);
-        return (float) $valueUDS;
+        return (float)$valueUDS;
     }
 
     private function prepareCurrency(string $value): string
@@ -169,21 +167,21 @@ class BsScanRepository
         return $currency;
     }
 
-    private function prepareFeeValue(string $value):float
+    private function prepareFeeValue(string $value): float
     {
         list($value, $currency, $valueUDS) = explode(' ', $value);
-        return (float) $value;
+        return (float)$value;
     }
 
-    private function prepareFeeUSDValue(string $value):float
+    private function prepareFeeUSDValue(string $value): float
     {
         list($value, $currency, $valueUDS) = explode(' ', $value);
         return (float)str_replace(['(', ')', '$'], '', $valueUDS);
     }
 
-    private function prepareMethod(string $string):string
+    private function prepareMethod(string $string): string
     {
-        $method = preg_replace( ["/^Function: /", "/\(.+\).+$/", "/\(\).+$/"],'', $string);
+        $method = preg_replace(["/^Function: /", "/\(.+\).+$/", "/\(\).+$/"], '', $string);
         return strlen($method) > 20 ? '-' : $method;
     }
 }
