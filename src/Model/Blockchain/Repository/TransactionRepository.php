@@ -24,7 +24,7 @@ class TransactionRepository extends ServiceEntityRepository
                 FROM
                 	blockchain_transactions
                 WHERE
-                	blockchain_transactions.to_contract = '{$task->getContract()}'";
+                	blockchain_transactions.to_wallet1 = '{$task->getContract()}'";
         try {
             $this->_em->getConnection()->executeStatement($sql);
         } catch (Exception $e) {

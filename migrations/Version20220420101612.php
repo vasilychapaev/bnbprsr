@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DoctrineMigrations;
+
+use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version20220420101612 extends AbstractMigration
+{
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    public function up(Schema $schema): void
+    {
+        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE blockchain_transactions ADD from_wallet VARCHAR(255) NOT NULL, ADD to_wallet1 VARCHAR(255) NOT NULL, ADD to_wallet2 VARCHAR(255) DEFAULT NULL, ADD to_wallet3 VARCHAR(255) DEFAULT NULL, ADD to_wallet4 VARCHAR(255) DEFAULT NULL, ADD value2 DOUBLE PRECISION DEFAULT NULL, ADD value3 DOUBLE PRECISION DEFAULT NULL, ADD value4 DOUBLE PRECISION DEFAULT NULL, ADD to_wallet_json JSON NOT NULL, DROP from_contract, DROP to_contract, CHANGE value value1 DOUBLE PRECISION NOT NULL');
+    }
+
+    public function down(Schema $schema): void
+    {
+        // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('ALTER TABLE blockchain_transactions ADD from_contract VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, ADD to_contract VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, DROP from_wallet, DROP to_wallet1, DROP to_wallet2, DROP to_wallet3, DROP to_wallet4, DROP value2, DROP value3, DROP value4, DROP to_wallet_json, CHANGE status status VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE hash hash VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE method method VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE currency currency VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE detail_raw detail_raw LONGTEXT NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE value1 value DOUBLE PRECISION NOT NULL');
+        $this->addSql('ALTER TABLE messenger_messages CHANGE body body LONGTEXT NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE headers headers LONGTEXT NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE queue_name queue_name VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('ALTER TABLE parser_processes CHANGE status status VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE log log LONGTEXT DEFAULT NULL COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('ALTER TABLE parser_tasks CHANGE title title VARCHAR(255) DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE description description VARCHAR(255) DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE contract contract VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE last_transaction_hash last_transaction_hash VARCHAR(255) DEFAULT NULL COLLATE `utf8mb4_unicode_ci`');
+        $this->addSql('ALTER TABLE user_users CHANGE username username VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE email email VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`, CHANGE password password VARCHAR(255) NOT NULL COLLATE `utf8mb4_unicode_ci`');
+    }
+}

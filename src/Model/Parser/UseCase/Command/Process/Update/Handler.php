@@ -66,14 +66,21 @@ class Handler
                 $data->method,
                 $data->block,
                 $data->hash,
-                $data->to,
+                $data->toWallet1,
+                $data->toWallet2,
+                $data->toWallet3,
+                $data->toWallet4,
                 $data->fee,
                 $data->feeUSD,
-                $data->value,
+                $data->value1,
+                $data->value2,
+                $data->value3,
+                $data->value4,
                 $data->valueUSD,
                 $data->currency,
+                $data->toWalletJson,
                 $data->dateTime,
-                $data->raw,
+                $data->raw
             );
 
             $this->transactionRepository->add($transaction);

@@ -113,18 +113,53 @@ class BsScanRepository
         $dateTime = $crawler->filterXPath('//*[@id="ContentPlaceHolder1_divTimeStamp"]/div/div[2]')->text(0);
         $data['dateTime'] = $this->prepareTimestamp($dateTime);
 
-        //from
-        $data['from'] = $crawler->filterXPath('//*[@id="spanFromAdd"]')->text('n/a');
+        //fromWallet
+        $data['fromWallet'] = $crawler->filterXPath('//*[@id="spanFromAdd"]')->text('n/a');
 
-        //to
-        $data['to'] = $crawler->filterXPath('//*[@id="contractCopy"]')->text('n/a');
+        //toWallet1
+        $data['toWallet1'] = $crawler->filterXPath('//*[@id="contractCopy"]')->text('n/a');
+        $data['toWallet2'] = null;
+        $data['toWallet3'] = null;
+        $data['toWallet4'] = null;
 
         //value
         $value = $crawler->filterXPath('//*[@id="ContentPlaceHolder1_spanValue"]')->text('0.0 BNB ($0.0)');
-        $data['value'] = $this->prepareValue($value);
+        $data['value1'] = $this->prepareValue($value);
+        $data['value2'] = null;
+        $data['value3'] = null;
+        $data['value4'] = null;
         $data['currency'] = $this->prepareCurrency($value);
         $data['valueUSD'] = $this->prepareUDSValue($value);
 
+
+        //Internal tab
+        $internalTab = $crawler->filterXPath('//*[@id="internal-tab"]')->count();
+
+        $data['toWalletJson'] = [];
+
+        if ($internalTab) {
+
+            $data['toWalletJson'] = $crawler->filterXPath('//*[@id="ContentPlaceHolder1_divinternaltable"]/table/tbody/tr')
+                ->each(function (Crawler $crawler) {
+                    $value = $crawler->filterXPath('//td[5]')->text(0);
+                    $value = (float) str_replace(' BNB', '', $value);
+                    return [
+                        'from' => $crawler->filterXPath('//td[2]/span/a')->text('n/a'),
+                        'to' => $crawler->filterXPath('//td[4]/span/a')->text('n/a'),
+                        'value' => $value,
+                    ];
+                });
+
+            $firstThree = array_slice($data['toWalletJson'], 0, 2);
+
+            foreach ($firstThree as $key => $val) {
+                $index = $key + 2;
+                $indexToWallet = "toWallet{$index}";
+                $indexValue = "value{$index}";
+                $data[$indexToWallet] = $val['to'];
+                $data[$indexValue] = $val['value'];
+            }
+        }
 
         //fee
         $feeValue = $crawler->filterXPath('//*[@id="ContentPlaceHolder1_spanTxFee"]')->text('0.0 BNB ($0.0)');

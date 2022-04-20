@@ -25,13 +25,13 @@ class Transaction
      * @ORM\ManyToOne(targetEntity="App\Model\Parser\Entity\Task", inversedBy="transactions")
      * @ORM\JoinColumn(name="task_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private Task $task;
+    private ?Task $task;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Model\Parser\Entity\Process", inversedBy="transactions")
      * @ORM\JoinColumn(name="process_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    private Process $process;
+    private ?Process $process;
 
     /**
      * @ORM\Column(type="string")
@@ -54,14 +54,29 @@ class Transaction
     private string $block;
 
     /**
-     * @ORM\Column(type="string", name="from_contract")
+     * @ORM\Column(type="string", name="from_wallet")
      */
-    private string $from;
+    private string $fromWallet;
 
     /**
-     * @ORM\Column(type="string", name="to_contract")
+     * @ORM\Column(type="string", name="to_wallet1")
      */
-    private string $to;
+    private string $toWallet1;
+
+    /**
+     * @ORM\Column(type="string", name="to_wallet2", nullable=true)
+     */
+    private ?string $toWallet2;
+
+    /**
+     * @ORM\Column(type="string", name="to_wallet3", nullable=true)
+     */
+    private ?string $toWallet3;
+
+    /**
+     * @ORM\Column(type="string", name="to_wallet4", nullable=true)
+     */
+    private ?string $toWallet4;
 
     /**
      * @ORM\Column(type="float")
@@ -76,7 +91,22 @@ class Transaction
     /**
      * @ORM\Column(type="float")
      */
-    private float $value;
+    private float $value1;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private ?float $value2;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private ?float $value3;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private ?float $value4;
 
     /**
      * @ORM\Column(type="float")
@@ -92,6 +122,11 @@ class Transaction
      * @ORM\Column(type="text")
      */
     private string $detailRaw;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private array $toWalletJson;
 
     /**
      * @ORM\Column(type="datetime")
@@ -117,13 +152,20 @@ class Transaction
         string $status,
         string$method,
         int $block,
-        string $from,
-        string $to,
+        string $fromWallet,
+        string $toWallet1,
+        ?string $toWallet2,
+        ?string $toWallet3,
+        ?string $toWallet4,
         float $fee,
         float $feeUSD,
-        float $value,
+        float $value1,
+        ?float $value2,
+        ?float $value3,
+        ?float $value4,
         float $valueUSD,
         string $currency,
+        array $toWalletJson,
         \DateTime $dateTime,
         $detailRaw
     )
@@ -134,15 +176,22 @@ class Transaction
         $this->status = $status;
         $this->method = $method;
         $this->block = $block;
-        $this->from = $from;
-        $this->to = $to;
+        $this->fromWallet = $fromWallet;
+        $this->toWallet1 = $toWallet1;
+        $this->toWallet2 = $toWallet2;
+        $this->toWallet3 = $toWallet3;
+        $this->toWallet4 = $toWallet4;
         $this->fee = $fee;
         $this->feeUSD = $feeUSD;
-        $this->value = $value;
+        $this->value1 = $value1;
+        $this->value2 = $value2;
+        $this->value3 = $value3;
+        $this->value4 = $value4;
         $this->valueUSD = $valueUSD;
         $this->currency = $currency;
         $this->dateTime = $dateTime;
         $this->detailRaw = $detailRaw;
+        $this->toWalletJson = $toWalletJson;
     }
 
     /**
@@ -173,14 +222,14 @@ class Transaction
         return $this->block;
     }
 
-    public function getFrom(): ?string
+    public function getFromWallet(): ?string
     {
-        return $this->from;
+        return $this->fromWallet;
     }
 
-    public function getTo(): ?string
+    public function getToWallet1(): ?string
     {
-        return $this->to;
+        return $this->toWallet1;
     }
 
     public function getFee(): ?float
@@ -188,9 +237,9 @@ class Transaction
         return $this->fee;
     }
 
-    public function getValue(): ?float
+    public function getValue1(): ?float
     {
-        return $this->value;
+        return $this->value1;
     }
 
     public function getCurrency(): ?string
